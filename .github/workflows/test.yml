@@ -1,0 +1,104 @@
+name: Testing Application
+on: [pull_request]
+
+permissions:
+    checks: write
+    contents: read
+    pull-requests: write
+
+jobs:
+    testing:
+        name: Code style & Tests
+        runs-on: ubuntu-latest
+
+        strategy:
+            fail-fast: false
+            matrix:
+                php-versions: ['8.4']
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-versions }}
+                  tools: phpunit-bridge
+                  extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, mysql
+                  coverage: xdebug
+
+            - name: Get composer cache directory
+              id: composer-cache
+              run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+            - name: Cache composer dependencies
+              uses: actions/cache@v3
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: ${{ runner.os }}-composer-
+
+            - name: Install Composer dependencies
+              run: composer install --no-progress --prefer-dist --optimize-autoloader --no-interaction --quiet
+
+            - name: Run PHPStan
+              run: vendor/bin/phpstan analyse
+
+            - name: Run PHP Mess Detector
+              if: always()
+              run: vendor/bin/phpmd src,tests github phpmd.dist.xml
+
+            - name: Run migrations
+              env:
+                  APP_ENV: test
+              run: |
+                  php bin/console doctrine:schema:update --force --no-interaction
+                  php bin/console doctrine:migrations:migrate --allow-no-migration --no-interaction
+
+            - name: Run PHPUnit tests
+              env:
+                  APP_ENV: test
+              run: vendor/bin/phpunit --configuration phpunit.xml.dist --log-junit var/tests.xml --coverage-cobertura var/coverage.xml
+
+            - name: Report failed test results
+              uses: mbeccati/test-reporter@d92228612c27c2b036a4b40888c64124732ae2b3
+              if: failure()
+              with:
+                  name: Failed tests summary
+                  path: var/tests.xml
+                  reporter: java-junit
+
+            - name: Generate code coverage report as text
+              uses: irongut/CodeCoverageSummary@v1.3.0
+              if: always()
+              with:
+                  filename: var/coverage.xml
+                  badge: false
+                  fail_below_min: true
+                  format: text
+                  hide_branch_rate: false
+                  hide_complexity: true
+                  indicators: true
+                  output: console
+                  thresholds: '50 75'
+
+            - name: Generate code coverage report
+              uses: irongut/CodeCoverageSummary@v1.3.0
+              if: always()
+              with:
+                  filename: var/coverage.xml
+                  badge: false
+                  fail_below_min: true
+                  format: markdown
+                  hide_branch_rate: false
+                  hide_complexity: true
+                  indicators: true
+                  output: file
+                  thresholds: '50 75'
+
+            - name: Report code coverage
+              uses: marocchino/sticky-pull-request-comment@v2
+              if: always()
+              with:
+                  recreate: true
+                  path: code-coverage-results.md
