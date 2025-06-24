@@ -7,7 +7,7 @@ More information will be provided later.
 ## Installation
 
 ```shell
-git clone 
+git clone git@github.com:irmantasp/availability-planner-for-groups.git apfg
 docker compose up -d
 ```
 
