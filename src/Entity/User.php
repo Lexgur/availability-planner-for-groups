@@ -13,6 +13,7 @@ use App\Entity\Traits\TimestampableTrait;
 use App\Entity\Traits\UuidTrait;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use PHPUnit\Framework\Attributes\CodeCoverageIgnore;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -33,6 +34,7 @@ class User implements PasswordAuthenticatedUserInterface
         return (string) $this->emailHash;
     }
 
+    #[CodeCoverageIgnore]
     public function eraseCredentials(): void
     {
         // Clear sensitive data if needed

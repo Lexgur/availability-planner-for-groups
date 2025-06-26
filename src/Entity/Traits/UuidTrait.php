@@ -18,11 +18,6 @@ trait UuidTrait
         return $this->uuid;
     }
 
-    public function setUuid(string $uuid): void
-    {
-        $this->uuid = $uuid;
-    }
-
     #[ORM\PrePersist]
     public function initializeUuid(): void
     {
