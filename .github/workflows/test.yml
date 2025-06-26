@@ -60,7 +60,7 @@ jobs:
             - name: Run PHPUnit tests
               env:
                   APP_ENV: test
-              run: vendor/bin/phpunit --configuration phpunit.xml.dist --log-junit var/tests.xml --coverage-cobertura var/coverage.xml
+              run: vendor/bin/phpunit --configuration phpunit.dist.xml --log-junit var/tests.xml --coverage-cobertura var/coverage.xml
 
             - name: Report failed test results
               uses: mbeccati/test-reporter@d92228612c27c2b036a4b40888c64124732ae2b3
