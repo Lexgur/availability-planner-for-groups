@@ -34,6 +34,7 @@ class User implements PasswordAuthenticatedUserInterface
         return (string) $this->emailHash;
     }
 
+    /** @phpstan-ignore-next-line  */
     #[CodeCoverageIgnore]
     public function eraseCredentials(): void
     {

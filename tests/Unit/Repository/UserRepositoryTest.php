@@ -30,9 +30,9 @@ class UserRepositoryTest extends KernelTestCase
         $user->setRoles(['ROLE_USER']);
         $user->setIsVerified(true);
 
-        $em = self::getContainer()->get('doctrine')->getManager();
-        $em->persist($user);
-        $em->flush();
+        $entityManager = self::getContainer()->get('doctrine')->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
 
         $newHashedPassword = 'new_hashed_password';
         $this->repository->upgradePassword($user, $newHashedPassword);

@@ -15,7 +15,7 @@ trait RolesTrait
     private array $roles = [];
 
     /**
-     * @see UserInterface
+     * @return list<string>
      */
     public function getRoles(): array
     {

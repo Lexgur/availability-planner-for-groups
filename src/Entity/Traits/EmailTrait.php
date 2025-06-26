@@ -16,11 +16,9 @@ trait EmailTrait
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
-        if (method_exists($this, 'setEmailHashFromEmail')) {
-            $this->setEmailHashFromEmail($email);
-        }
+        $this->setEmailHashFromEmail($email);
 
         return $this;
     }
+
 }
