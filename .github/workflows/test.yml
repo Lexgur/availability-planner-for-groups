@@ -52,6 +52,8 @@ jobs:
               env:
                   APP_ENV: test
               run: |
+                  mkdir -p var/test
+                  touch var/test/data.db
                   php bin/console doctrine:schema:update --force --no-interaction
                   php bin/console doctrine:migrations:migrate --allow-no-migration --no-interaction
 
