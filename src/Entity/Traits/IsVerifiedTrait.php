@@ -19,6 +19,7 @@ trait IsVerifiedTrait
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
         return $this;
     }
 }

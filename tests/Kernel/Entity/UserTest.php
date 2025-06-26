@@ -29,6 +29,7 @@ class UserTest extends TestCase
 
         // PasswordTrait
         $password = 'supersecret';
+
         $user->setPassword(password_hash($password, PASSWORD_BCRYPT));
         $this->assertTrue(password_verify($password, $user->getPassword()));
 

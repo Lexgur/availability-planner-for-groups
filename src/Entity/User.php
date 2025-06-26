@@ -21,10 +21,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL_HASH', fields: ['emailHash'])]
 class User implements PasswordAuthenticatedUserInterface
 {
-    use PasswordTrait;
     use EmailTrait;
-    use IsVerifiedTrait;
     use HashedEmailTrait;
+    use IsVerifiedTrait;
+    use PasswordTrait;
     use RolesTrait;
     use TimestampableTrait;
     use UuidTrait;
