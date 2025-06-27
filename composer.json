@@ -20,7 +20,8 @@
         "symfony/runtime": "7.3.*",
         "symfony/security-bundle": "7.3.*",
         "symfony/uid": "7.3.*",
-        "symfony/yaml": "7.3.*"
+        "symfony/yaml": "7.3.*",
+        "symfonycasts/verify-email-bundle": "^1.17"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^8.3",
