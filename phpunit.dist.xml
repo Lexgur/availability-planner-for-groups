@@ -37,7 +37,7 @@
         <exclude>
             <directory>src/DataFixtures</directory>
             <directory>src/Story</directory>
-            <file>src/Kernel.php</file>
+            <file>Kernel.php</file>
         </exclude>
 
         <deprecationTrigger>
