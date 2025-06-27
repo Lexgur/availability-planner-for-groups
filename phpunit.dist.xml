@@ -37,6 +37,7 @@
 
         <exclude>
             <directory>src/DataFixtures</directory>
+            <directory>src/Story</directory>
         </exclude>
 
         <deprecationTrigger>
