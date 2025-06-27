@@ -27,7 +27,6 @@ class UserTest extends TestCase
         $this->assertSame($email, $user->getEmail());
         $this->assertSame(hash('sha3-256', $email), $user->getEmailHash());
 
-        // PasswordTrait
         $password = 'supersecret';
 
         $user->setPassword(password_hash($password, PASSWORD_BCRYPT));
