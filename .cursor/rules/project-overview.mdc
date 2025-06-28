@@ -1,7 +1,7 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # Availability Planner for Groups - Project Overview
 
@@ -40,6 +40,16 @@ This is a Symfony 7.3 application designed to help hobbyist groups find and plan
 - [bin/](mdc:bin) - Symfony console and PHPUnit executables
 - [var/](mdc:var) - Cache and logs (gitignored)
 
+### Cursor AI Rules
+- [.cursor/rules/](mdc:.cursor/rules) - AI development assistance rules
+  - [.cursor/rules/project-overview.mdc](mdc:.cursor/rules/project-overview.mdc) - This overview
+  - [.cursor/rules/symfony-development.mdc](mdc:.cursor/rules/symfony-development.mdc) - Symfony best practices
+  - [.cursor/rules/docker-workflow.mdc](mdc:.cursor/rules/docker-workflow.mdc) - Container development
+  - [.cursor/rules/code-quality.mdc](mdc:.cursor/rules/code-quality.mdc) - Code standards
+  - [.cursor/rules/testing-guidelines.mdc](mdc:.cursor/rules/testing-guidelines.mdc) - Testing strategy
+  - [.cursor/rules/availability-planner-domain.mdc](mdc:.cursor/rules/availability-planner-domain.mdc) - Business domain
+  - [.cursor/rules/pr-summarization.mdc](mdc:.cursor/rules/pr-summarization.mdc) - PR generation workflow
+
 ## Key Technologies
 - **PHP 8.4+** - Backend language
 - **Symfony 7.3** - Web framework
@@ -58,6 +68,13 @@ The project uses Docker for development with convenient Makefile commands:
 - `make php-cs-fixer` - Code style checking
 - `make phpstan` - Static analysis
 - `make phpmd` - Code quality analysis
+
+## PR Workflow
+When asked to "Summarize for PR", follow the workflow defined in [.cursor/rules/pr-summarization.mdc](mdc:.cursor/rules/pr-summarization.mdc) to:
+- Diff code against main branch
+- Analyze and categorize changes
+- Generate PR title and description using [.github/PULL_REQUEST_TEMPLATE.md](mdc:.github/PULL_REQUEST_TEMPLATE.md)
+- Output in Markdown format
 
 ## Core Purpose
 - Manage group member availability

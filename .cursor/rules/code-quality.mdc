@@ -1,7 +1,7 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # Code Quality Standards
 
@@ -79,6 +79,12 @@ alwaysApply: false
 - README updates for new features
 - Inline comments for complex logic
 - API documentation for endpoints
+
+## Pull Request Standards
+- Use [.github/PULL_REQUEST_TEMPLATE.md](mdc:.github/PULL_REQUEST_TEMPLATE.md) for all PRs
+- Follow PR summarization workflow from [.cursor/rules/pr-summarization.mdc](mdc:.cursor/rules/pr-summarization.mdc)
+- Ensure all checklist items are completed
+- Provide clear description of changes and business value
 
 ## IDE Configuration
 - Use `.editorconfig` for consistent formatting
