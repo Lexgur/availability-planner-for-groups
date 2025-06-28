@@ -17,7 +17,6 @@ trait UpdatedAtTrait
     #[Gedmo\Timestampable(on: 'update')]
     private ?\DateTimeInterface $updatedAt = null;
 
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;

@@ -53,6 +53,6 @@ class UserTest extends TestCase
         // "Delete" simulated by nulling the User
         $user = null;
 
-        $this->assertNull($user);
+        $this->assertEmpty($user);
     }
 }

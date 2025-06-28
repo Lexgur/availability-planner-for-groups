@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Traits\CreatedAtTrait;
 use App\Entity\Traits\EmailTrait;
 use App\Entity\Traits\IsVerifiedTrait;
 use App\Entity\Traits\PasswordTrait;
 use App\Entity\Traits\RolesTrait;
-use App\Entity\Traits\CreatedAtTrait;
 use App\Entity\Traits\UpdatedAtTrait;
 use App\Entity\Traits\UuidTrait;
 use App\Repository\UserRepository;
@@ -20,11 +20,11 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements PasswordAuthenticatedUserInterface
 {
+    use CreatedAtTrait;
     use EmailTrait;
     use IsVerifiedTrait;
     use PasswordTrait;
     use RolesTrait;
-    use CreatedAtTrait;
     use UpdatedAtTrait;
     use UuidTrait;
 
