@@ -13,12 +13,14 @@ class UserTest extends TestCase
     {
         $user = new User();
         $user->initializeUuid();
+        $user->setCreatedAt(new \DateTimeImmutable());
         $user->setEmail('test@example.example');
         $user->setPassword(password_hash('password123', \PASSWORD_BCRYPT));
         $user->setRoles(['ROLE_USER']);
         $user->setVerified(true);
 
         $this->assertNotEmpty($user->getUuid());
+        $this->assertNotEmpty($user->getCreatedAt());
         $this->assertEquals('test@example.example', $user->getEmail());
         $this->assertTrue(password_verify('password123', $user->getPassword()));
         $this->assertContains('ROLE_USER', $user->getRoles());
@@ -29,6 +31,7 @@ class UserTest extends TestCase
     {
         $user = new User();
         $user->initializeUuid();
+        $user->setCreatedAt(new \DateTimeImmutable());
         $user->setEmail('original@example.example');
         $user->setPassword(password_hash('original', \PASSWORD_BCRYPT));
         $user->setRoles(['ROLE_USER']);
@@ -37,7 +40,9 @@ class UserTest extends TestCase
         // Update fields
         $user->setEmail('updated@example.example');
         $user->setVerified(true);
+        $user->setUpdatedAt(new \DateTimeImmutable());
 
+        $this->assertNotEmpty($user->getUpdatedAt());
         $this->assertEquals('updated@example.example', $user->getEmail());
         $this->assertTrue($user->isVerified());
     }
