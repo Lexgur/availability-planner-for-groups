@@ -1,0 +1,152 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Testing Guidelines
+
+## Testing Stack
+
+### PHPUnit
+- Configuration: [phpunit.dist.xml](mdc:phpunit.dist.xml)
+- Main testing framework
+- Bootstrap file: [tests/bootstrap.php](mdc:tests/bootstrap.php)
+- Run tests with: `make phpunit`
+
+### Zenstruck Foundry
+- Factory stories: [src/Story/](mdc:src/Story)
+- Main story: [src/Story/AppStory.php](mdc:src/Story/AppStory.php)
+- Creates test data with realistic factories
+- Supports relationships and complex data scenarios
+
+### Doctrine Test Bundle
+- Configuration: [config/packages/dama_doctrine_test_bundle.yaml](mdc:config/packages/dama_doctrine_test_bundle.yaml)
+- Provides database transaction wrapping for tests
+- Ensures test isolation
+- Automatically rolls back changes after each test
+
+## Test Structure
+
+### Test Organization
+- Tests should be in [tests/](mdc:tests)
+- Mirror the `src/` directory structure
+- Use `*Test.php` naming convention
+- Group related tests in test classes
+
+### Test Types
+
+#### Unit Tests
+- Test individual classes in isolation
+- Mock dependencies using PHPUnit mocks
+- Focus on business logic
+- Fast execution, no database required
+
+#### Integration Tests
+- Test component interactions
+- Use real database with test data
+- Test repository methods and services
+- Use Doctrine Test Bundle for isolation
+
+#### Functional Tests
+- Test complete HTTP requests
+- Use Symfony's BrowserKit
+- Test controllers and routing
+- Verify response status and content
+
+## Testing Best Practices
+
+### Test Data Management
+- Use Zenstruck Foundry for creating test entities
+- Create factories for complex entities
+- Use stories for common test scenarios
+- Avoid hardcoded test data
+
+### Test Naming
+- Use descriptive test method names
+- Follow pattern: `test{Scenario}{ExpectedResult}`
+- Example: `testCreateUserWithValidDataReturnsUser()`
+
+### Assertions
+- Use specific assertions (e.g., `assertEquals` over `assertTrue`)
+- Test one concept per test method
+- Use data providers for multiple scenarios
+- Assert both positive and negative cases
+
+### Mocking Guidelines
+- Mock external dependencies (APIs, file system)
+- Don't mock what you're testing
+- Use dependency injection for testability
+- Mock at the boundary of your system
+
+## Test Configuration
+
+### Environment Setup
+- Use separate test database
+- Configure test environment in `.env.test`
+- Use in-memory SQLite for fast tests
+- Configure Xdebug for coverage reports
+
+### Coverage Requirements
+- Aim for >90% code coverage
+- Focus on critical business logic
+- Exclude generated code from coverage
+- Use coverage reports to identify gaps
+
+## Common Test Patterns
+
+### Entity Testing
+```php
+public function testUserCreation(): void
+{
+    $user = UserFactory::createOne([
+        'email' => 'test@example.com',
+        'name' => 'Test User'
+    ])->object();
+    
+    $this->assertInstanceOf(User::class, $user);
+    $this->assertEquals('test@example.com', $user->getEmail());
+}
+```
+
+### Controller Testing
+```php
+public function testIndexAction(): void
+{
+    $client = static::createClient();
+    $client->request('GET', '/users');
+    
+    $this->assertResponseIsSuccessful();
+    $this->assertSelectorExists('table.users');
+}
+```
+
+### Service Testing
+```php
+public function testUserService(): void
+{
+    $userRepository = $this->createMock(UserRepository::class);
+    $userService = new UserService($userRepository);
+    
+    $user = UserFactory::createOne()->object();
+    $userRepository->expects($this->once())
+        ->method('find')
+        ->willReturn($user);
+    
+    $result = $userService->getUser(1);
+    $this->assertSame($user, $result);
+}
+```
+
+## Running Tests
+
+### Commands
+- `make phpunit` - Run all tests with coverage
+- `make phpunit -- --filter=UserTest` - Run specific test class
+- `make phpunit -- --coverage-text` - Text coverage report
+- `make phpunit -- --coverage-html=var/coverage` - HTML coverage report
+
+### Test Database
+- Tests use separate database configuration
+- Database is reset between test runs
+- Use migrations to set up test schema
+- Load fixtures for test data when needed

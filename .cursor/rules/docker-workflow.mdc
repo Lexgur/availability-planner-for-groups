@@ -1,0 +1,76 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Docker Development Workflow
+
+## Container Setup
+The project uses Docker for development with configuration in [compose.yml](mdc:compose.yml).
+
+## Quick Commands (via Makefile)
+All development commands are available through the [Makefile](mdc:Makefile):
+
+### Container Management
+- `make up` - Start all containers
+- `make down` - Stop all containers
+- `make start` - Start containers without updating
+- `make stop` - Stop containers
+- `make prune` - Remove containers and volumes
+- `make ps` - List running containers
+- `make logs` - View container logs
+
+### Development Commands
+- `make shell` - Access PHP container shell
+- `make composer` - Run Composer commands
+- `make console` - Run Symfony console commands
+
+### Code Quality
+- `make php-cs-fixer` - Run PHP CS Fixer
+- `make phpmd` - Run PHP Mess Detector
+- `make phpstan` - Run PHPStan static analysis
+
+### Testing
+- `make phpunit` - Run PHPUnit tests with coverage
+- `make phpunit --no-coverage` - Run tests without coverage
+
+## Direct Docker Commands
+If you prefer direct Docker commands:
+
+```bash
+# Start containers
+docker compose up -d
+
+# Access PHP container
+docker compose exec php bash
+
+# Run Composer
+docker compose exec php composer install
+
+# Run Symfony console
+docker compose exec php bin/console cache:clear
+
+# Run tests
+docker compose exec -e PHP_XDEBUG_MODE=coverage php bin/phpunit
+```
+
+## Development Environment
+- **PHP 8.4+** - Latest PHP version
+- **Symfony 7.3** - Latest Symfony framework
+- **Doctrine ORM 3.4** - Database abstraction
+- **Docker Compose** - Multi-container setup
+
+## Access Points
+- **Application**: http://apfg.docker.localhost
+- **Traefik Dashboard**: http://apfg.docker.localhost:8080
+
+## Environment Variables
+- Use `.env` file for local configuration
+- Database credentials configured via environment variables
+- Xdebug configured for development and testing
+
+## Troubleshooting
+- If containers won't start, try `make prune` to clean up
+- Check logs with `make logs` for debugging
+- Use `make shell` to inspect container state
+- Clear Symfony cache with `make console cache:clear`

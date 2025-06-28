@@ -1,0 +1,87 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Availability Planner for Groups - Project Overview
+
+This is a Symfony 7.3 application designed to help hobbyist groups find and plan their activity times through calendar functionality.
+
+## Project Structure
+
+### Core Application Files
+- [composer.json](mdc:composer.json) - PHP dependencies and project configuration
+- [Makefile](mdc:Makefile) - Development commands and Docker operations
+- [compose.yml](mdc:compose.yml) - Docker container configuration
+- [README.md](mdc:README.md) - Project documentation and setup instructions
+
+### Application Code
+- [src/](mdc:src) - Main application source code
+  - [src/Controller/](mdc:src/Controller) - HTTP controllers
+  - [src/Entity/](mdc:src/Entity) - Doctrine ORM entities
+  - [src/Repository/](mdc:src/Repository) - Data access layer
+  - [src/DataFixtures/](mdc:src/DataFixtures) - Test data fixtures
+  - [src/Story/](mdc:src/Story) - Factory stories for testing
+
+### Configuration
+- [config/](mdc:config) - Symfony configuration files
+  - [config/bundles.php](mdc:config/bundles.php) - Bundle registration
+  - [config/services.yaml](mdc:config/services.yaml) - Service definitions
+  - [config/routes.yaml](mdc:config/routes.yaml) - Routing configuration
+  - [config/packages/](mdc:config/packages) - Package-specific configurations
+
+### Templates and Assets
+- [templates/](mdc:templates) - Twig templates
+- [public/](mdc:public) - Web-accessible files
+- [migrations/](mdc:migrations) - Database migration files
+
+### Development Tools
+- [tests/](mdc:tests) - PHPUnit test suite
+- [bin/](mdc:bin) - Symfony console and PHPUnit executables
+- [var/](mdc:var) - Cache and logs (gitignored)
+
+## Key Technologies
+- **PHP 8.4+** - Backend language
+- **Symfony 7.3** - Web framework
+- **Doctrine ORM 3.4** - Database abstraction
+- **Docker** - Containerization
+- **Twig** - Template engine
+- **PHPUnit** - Testing framework
+
+## Development Workflow
+The project uses Docker for development with convenient Makefile commands:
+- `make up` - Start containers
+- `make shell` - Access PHP container
+- `make composer` - Run Composer commands
+- `make console` - Run Symfony console commands
+- `make phpunit` - Run tests
+- `make php-cs-fixer` - Code style checking
+- `make phpstan` - Static analysis
+- `make phpmd` - Code quality analysis
+
+## Core Purpose
+- Manage group member availability
+- Schedule meetings and events
+- Coordinate multiple participants
+- Track availability patterns
+
+## Key Components
+- **Controllers**: Handle HTTP requests and responses in [src/Controller/](mdc:src/Controller)
+- **Entities**: Define data models in [src/Entity/](mdc:src/Entity)
+- **Repositories**: Manage data access in [src/Repository/](mdc:src/Repository)
+- **Templates**: View templates in [templates/](mdc:templates)
+- **Tests**: Test files in [tests/](mdc:tests)
+
+## Technology Stack
+- **Framework**: Symfony 6+
+- **Database**: Doctrine ORM
+- **Template Engine**: Twig
+- **Testing**: PHPUnit
+- **Code Quality**: PHP-CS-Fixer, PHPStan, PHPMD
+
+## Development Guidelines
+- Follow Symfony best practices and conventions
+- Use dependency injection for services
+- Implement proper validation and security measures
+- Write comprehensive tests for all features
+- Follow PSR-12 coding standards
