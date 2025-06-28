@@ -15,7 +15,8 @@ trait UuidTrait
         type: 'string',
         length: 36,
         unique: true,
-        nullable: false)]
+        nullable: false
+    )]
     private string $uuid;
 
     public function getUuid(): string
