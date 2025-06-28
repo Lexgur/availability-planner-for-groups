@@ -11,11 +11,7 @@ trait RolesTrait
     /**
      * @var list<string> The user roles
      */
-    #[ORM\Column(
-        name: 'roles',
-        type: 'json',
-        nullable: false
-    )]
+    #[ORM\Column]
     private array $roles = [];
 
     /**

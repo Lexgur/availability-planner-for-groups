@@ -8,11 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait PasswordTrait
 {
-    #[ORM\Column(
-        name: 'password',
-        type: 'string',
-        nullable: false,
-    )]
+    #[ORM\Column]
     private ?string $password = null;
 
     public function getPassword(): ?string

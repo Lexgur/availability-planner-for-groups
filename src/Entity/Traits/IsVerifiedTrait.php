@@ -8,11 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait IsVerifiedTrait
 {
-    #[ORM\Column(
-        name: 'is_verified',
-        type: 'boolean',
-        nullable: false
-    )]
+    #[ORM\Column(type: 'boolean')]
     private bool $isVerified = false;
 
     public function isVerified(): bool
@@ -20,7 +16,7 @@ trait IsVerifiedTrait
         return $this->isVerified;
     }
 
-    public function setVerified(bool $isVerified): static
+    public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
 

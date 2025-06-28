@@ -10,13 +10,7 @@ use Symfony\Component\Uid\Uuid;
 trait UuidTrait
 {
     #[ORM\Id]
-    #[ORM\Column(
-        name: 'uuid',
-        type: 'string',
-        length: 36,
-        unique: true,
-        nullable: false
-    )]
+    #[ORM\Column(type: 'string', length: 36, unique: true)]
     private string $uuid;
 
     public function getUuid(): string
