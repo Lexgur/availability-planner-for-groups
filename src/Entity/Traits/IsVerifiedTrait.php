@@ -11,7 +11,8 @@ trait IsVerifiedTrait
     #[ORM\Column(
         name: 'is_verified',
         type: 'boolean',
-        nullable: false)]
+        nullable: false
+    )]
     private bool $isVerified = false;
 
     public function isVerified(): bool
