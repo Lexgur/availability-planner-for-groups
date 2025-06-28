@@ -9,11 +9,20 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 trait TimestampableTrait
 {
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(
+        name: 'created_at',
+        type: 'datetime_immutable',
+        nullable: false,
+        updatable: false
+    )]
     #[Gedmo\Timestampable(on: 'create')]
     private \DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(
+        name: 'updated_at',
+        type: 'datetime_immutable',
+        nullable: false
+    )]
     #[Gedmo\Timestampable(on: 'update')]
     private \DateTimeImmutable $updatedAt;
 
@@ -35,11 +44,5 @@ trait TimestampableTrait
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-    }
-
-    #[ORM\PreUpdate]
-    public function updateTimestamp(): void
-    {
-        $this->updatedAt = new \DateTimeImmutable();
     }
 }
