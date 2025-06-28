@@ -19,6 +19,7 @@ class UserTest extends TestCase
         $user->setRoles(['ROLE_USER']);
         $user->setVerified(true);
 
+        $this->assertNotEmpty($user->getUserIdentifier());
         $this->assertNotEmpty($user->getUuid());
         $this->assertNotEmpty($user->getCreatedAt());
         $this->assertEquals('test@example.example', $user->getEmail());
