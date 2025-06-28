@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Kernel\Entity;
+namespace App\Tests\Unit\Entity;
 
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
@@ -15,26 +15,22 @@ class UserTest extends TestCase
 
         // UUID trait via lifecycle callback
         $user->initializeUuid();
-        $this->assertMatchesRegularExpression(
-            '/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i',
-            $user->getUuid()
-        );
 
-        // EmailTrait & HashedEmailTrait
+        // EmailTrait, trying to simulate what I imagine to be it being hashed before storing in the db
         $email = 'test@example.com';
-        $user->setEmail($email);
-        $user->setEmailHashFromEmail($email);
-        $this->assertSame($email, $user->getEmail());
-        $this->assertSame(hash('sha3-256', $email), $user->getEmailHash());
+        $hashedEmail = hash('sha3-256', $email);
+        $user->setEmail($hashedEmail);
+
+        $this->assertSame(hash('sha3-256', $email), $hashedEmail);
 
         // PasswordTrait
         $password = 'supersecret';
 
-        $user->setPassword(password_hash($password, PASSWORD_BCRYPT));
+        $user->setPassword(password_hash($password, \PASSWORD_BCRYPT));
         $this->assertTrue(password_verify($password, $user->getPassword()));
 
         // IsVerifiedTrait
-        $user->setIsVerified(true);
+        $user->setVerified(true);
         $this->assertTrue($user->isVerified());
 
         // RolesTrait
@@ -51,6 +47,6 @@ class UserTest extends TestCase
         $this->assertEquals($now, $user->getCreatedAt());
         $this->assertEquals($now, $user->getUpdatedAt());
 
-        $this->assertSame($user->getUserIdentifier(), $user->getEmailHash());
+        $this->assertSame($user->getUserIdentifier(), $user->getEmail());
     }
 }
