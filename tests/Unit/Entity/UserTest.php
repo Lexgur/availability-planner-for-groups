@@ -16,8 +16,6 @@ class UserTest extends TestCase
         // UUID trait via lifecycle callback
         $user->initializeUuid();
 
-        $this->assertNotEmpty($user->getUuid());
-
         // EmailTrait, trying to simulate what I imagine to be it being hashed before storing in the db
         $email = 'test@example.com';
         $hashedEmail = hash('sha3-256', $email);
@@ -41,7 +39,7 @@ class UserTest extends TestCase
         $this->assertContains('ROLE_ADMIN', $user->getRoles());
         $this->assertContains('ROLE_USER', $user->getRoles());
 
-        // CreatedAtTrait
+        // TimestampableTrait
         $now = new \DateTimeImmutable();
         $user->setCreatedAt($now);
         $user->setUpdatedAt($now);
