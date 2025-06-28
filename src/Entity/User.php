@@ -8,7 +8,8 @@ use App\Entity\Traits\EmailTrait;
 use App\Entity\Traits\IsVerifiedTrait;
 use App\Entity\Traits\PasswordTrait;
 use App\Entity\Traits\RolesTrait;
-use App\Entity\Traits\TimestampableTrait;
+use App\Entity\Traits\CreatedAtTrait;
+use App\Entity\Traits\UpdatedAtTrait;
 use App\Entity\Traits\UuidTrait;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +24,8 @@ class User implements PasswordAuthenticatedUserInterface
     use IsVerifiedTrait;
     use PasswordTrait;
     use RolesTrait;
-    use TimestampableTrait;
+    use CreatedAtTrait;
+    use UpdatedAtTrait;
     use UuidTrait;
 
     public function getUserIdentifier(): string
