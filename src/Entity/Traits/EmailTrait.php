@@ -14,7 +14,7 @@ trait EmailTrait
         type: 'string',
         length: 255,
         unique: true,
-        nullable: true
+        nullable: false
     )]
     #[Assert\Email]
     private ?string $email = null;
