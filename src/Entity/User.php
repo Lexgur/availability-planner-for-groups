@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Traits\EmailTrait;
-use App\Entity\Traits\HashedEmailTrait;
 use App\Entity\Traits\IsVerifiedTrait;
 use App\Entity\Traits\PasswordTrait;
 use App\Entity\Traits\RolesTrait;
@@ -18,11 +17,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL_HASH', fields: ['emailHash'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements PasswordAuthenticatedUserInterface
 {
     use EmailTrait;
-    use HashedEmailTrait;
     use IsVerifiedTrait;
     use PasswordTrait;
     use RolesTrait;
@@ -31,7 +29,7 @@ class User implements PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->emailHash;
+        return (string) $this->email;
     }
 
     /** @phpstan-ignore-next-line  */
