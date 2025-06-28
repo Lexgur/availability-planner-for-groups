@@ -11,7 +11,7 @@ trait PasswordTrait
     #[ORM\Column(
         name: 'password',
         type: 'string',
-        nullable: true,
+        nullable: false,
     )]
     private ?string $password = null;
 

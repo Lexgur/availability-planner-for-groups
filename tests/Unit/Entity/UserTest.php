@@ -41,7 +41,7 @@ class UserTest extends TestCase
         $this->assertContains('ROLE_ADMIN', $user->getRoles());
         $this->assertContains('ROLE_USER', $user->getRoles());
 
-        // TimestampableTrait
+        // CreatedAtTrait
         $now = new \DateTimeImmutable();
         $user->setCreatedAt($now);
         $user->setUpdatedAt($now);
