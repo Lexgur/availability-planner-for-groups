@@ -108,11 +108,10 @@ class UserTest extends KernelTestCase
 
         $violations = $this->validator->validate($user);
 
-        $this->assertGreaterThan(0, count($violations), 'This is checking if the validator returns any violations.');
+        $this->assertGreaterThan(0, \count($violations), 'This is checking if the validator returns any violations.');
 
         //This filters through the violations, makes sure it's an 'email' violation
-        $emailViolation = array_filter(iterator_to_array($violations), fn($violation) => $violation->getPropertyPath() === 'email');
+        $emailViolation = array_filter(iterator_to_array($violations), fn($violation) => 'email' === $violation->getPropertyPath());
         $this->assertNotEmpty($emailViolation);
     }
-
 }

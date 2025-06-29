@@ -31,7 +31,7 @@ class User implements PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return (string)$this->email;
+        return (string) $this->email;
     }
 
     #[ORM\PrePersist]
@@ -39,7 +39,7 @@ class User implements PasswordAuthenticatedUserInterface
     {
         $now = new \DateTimeImmutable();
 
-        if ($this->getCreatedAt() === null) {
+        if (null === $this->getCreatedAt()) {
             $this->setCreatedAt($now);
         }
     }
