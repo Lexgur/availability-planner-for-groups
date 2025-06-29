@@ -42,10 +42,6 @@ class User implements PasswordAuthenticatedUserInterface
         if ($this->getCreatedAt() === null) {
             $this->setCreatedAt($now);
         }
-
-        if ($this->getUpdatedAt() === null) {
-            $this->setUpdatedAt($now);
-        }
     }
 
     #[ORM\PreUpdate]
