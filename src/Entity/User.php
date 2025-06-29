@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\CodeCoverageIgnore;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements PasswordAuthenticatedUserInterface
 {
@@ -30,7 +31,27 @@ class User implements PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
+    }
+
+    #[ORM\PrePersist]
+    public function initializeTimestamps(): void
+    {
+        $now = new \DateTimeImmutable();
+
+        if ($this->getCreatedAt() === null) {
+            $this->setCreatedAt($now);
+        }
+
+        if ($this->getUpdatedAt() === null) {
+            $this->setUpdatedAt($now);
+        }
+    }
+
+    #[ORM\PreUpdate]
+    public function updateTimestamp(): void
+    {
+        $this->setUpdatedAt(new \DateTimeImmutable());
     }
 
     /** @phpstan-ignore-next-line  */

@@ -5,30 +5,24 @@ declare(strict_types=1);
 namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Uid\Uuid;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 
 trait UuidTrait
 {
     #[ORM\Id]
     #[ORM\Column(
-        name: 'uuid',
-        type: 'string',
+        type: UuidType::NAME,
         length: 36,
         unique: true,
         nullable: false
     )]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private string $uuid;
 
     public function getUuid(): string
     {
         return $this->uuid;
-    }
-
-    #[ORM\PrePersist]
-    public function initializeUuid(): void
-    {
-        if (!isset($this->uuid)) {
-            $this->uuid = Uuid::v4()->toRfc4122();
-        }
     }
 }

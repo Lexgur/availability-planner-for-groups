@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 trait CreatedAtTrait
 {
@@ -15,7 +14,6 @@ trait CreatedAtTrait
         nullable: true,
         updatable: false
     )]
-    #[Gedmo\Timestampable(on: 'create')]
     private ?\DateTimeInterface $createdAt = null;
 
     public function getCreatedAt(): ?\DateTimeInterface

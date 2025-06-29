@@ -5,60 +5,88 @@ declare(strict_types=1);
 namespace App\Tests\Kernel\Entity;
 
 use App\Entity\User;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Doctrine\ORM\EntityManagerInterface;
 
-class UserTest extends TestCase
+class UserTest extends KernelTestCase
 {
-    public function testInitializeAndSetters(): void
+    private EntityManagerInterface $entityManager;
+
+    protected function setUp(): void
+    {
+        self::bootKernel();
+
+        $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
+    }
+
+    public function testPersistAndRetrieveUser(): void
     {
         $user = new User();
-        $user->initializeUuid();
-        $user->setCreatedAt(new \DateTimeImmutable());
-        $user->setEmail('test@example.example');
+        $user->setEmail('test@example.test');
         $user->setPassword(password_hash('password123', \PASSWORD_BCRYPT));
         $user->setRoles(['ROLE_USER']);
         $user->setVerified(true);
 
-        $this->assertNotEmpty($user->getUserIdentifier());
+        // Persist and flush to database
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
         $this->assertNotEmpty($user->getUuid());
         $this->assertNotEmpty($user->getCreatedAt());
-        $this->assertEquals('test@example.example', $user->getEmail());
-        $this->assertTrue(password_verify('password123', $user->getPassword()));
-        $this->assertContains('ROLE_USER', $user->getRoles());
-        $this->assertTrue($user->isVerified());
+        $this->assertNotEmpty($user->getUpdatedAt());
+        $this->assertNotEmpty($user->getPassword());
+        $this->assertEquals('test@example.test', $user->getEmail());
+
+        // Fetch user from database by UUID
+        $repoUser = $this->entityManager->getRepository(User::class)->find($user->getUuid());
+
+        $this->assertSame($user->getUuid(), $repoUser->getUuid());
+        $this->assertEquals('test@example.test', $repoUser->getEmail());
     }
 
-    public function testUpdateUserFields(): void
+    public function testUpdateUser(): void
     {
+        // Create and persist user
         $user = new User();
-        $user->initializeUuid();
-        $user->setCreatedAt(new \DateTimeImmutable());
-        $user->setEmail('original@example.example');
+        $user->setEmail('original@example.original');
         $user->setPassword(password_hash('original', \PASSWORD_BCRYPT));
         $user->setRoles(['ROLE_USER']);
         $user->setVerified(false);
 
-        // Update fields
-        $user->setEmail('updated@example.example');
-        $user->setVerified(true);
-        $user->setUpdatedAt(new \DateTimeImmutable());
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
-        $this->assertNotEmpty($user->getUpdatedAt());
-        $this->assertEquals('updated@example.example', $user->getEmail());
-        $this->assertTrue($user->isVerified());
+        // Update user
+        $user->setEmail('updated@example.updated');
+        $user->setVerified(true);
+
+        $this->entityManager->flush();
+
+        $updatedUser = $this->entityManager->getRepository(User::class)->find($user->getUuid());
+
+        $this->assertEquals('updated@example.updated', $updatedUser->getEmail());
+        $this->assertEquals('ROLE_USER', $updatedUser->getRoles()[0]);
+        $this->assertTrue($updatedUser->isVerified());
+        $this->assertNotNull($updatedUser->getUpdatedAt());
     }
 
-    public function testDeleteUser(): void
+    public function testRemoveUser(): void
     {
-        // Simulating deletion of the database
         $user = new User();
-        $user->initializeUuid();
-        $user->setEmail('delete@example.example');
+        $user->setEmail('delete@example.delete');
         $user->setPassword(password_hash('secret', \PASSWORD_BCRYPT));
 
-        // "Delete" simulated by nulling the User
-        $user = null;
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
-        $this->assertEmpty($user);
+        $uuid = $user->getUuid();
+
+        // Remove and flush
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+
+        $deletedUser = $this->entityManager->getRepository(User::class)->find($uuid);
+
+        $this->assertNull($deletedUser);
     }
 }

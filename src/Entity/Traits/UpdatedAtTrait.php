@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 trait UpdatedAtTrait
 {
     #[ORM\Column(
         name: 'updated_at',
         type: 'datetime_immutable',
-        nullable: true
+        nullable: true,
+        updatable: false
     )]
-    #[Gedmo\Timestampable(on: 'update')]
     private ?\DateTimeInterface $updatedAt = null;
 
     public function getUpdatedAt(): ?\DateTimeInterface
