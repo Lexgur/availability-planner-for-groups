@@ -40,6 +40,7 @@ class UserTest extends KernelTestCase
         // Fetch user from database by UUID
         $repoUser = $this->entityManager->getRepository(User::class)->find($user->getUuid());
 
+        $this->assertNotEmpty($user->getUserIdentifier());
         $this->assertSame($user->getUuid(), $repoUser->getUuid());
         $this->assertEquals('test@example.test', $repoUser->getEmail());
     }
