@@ -49,7 +49,7 @@ class UserTest extends KernelTestCase
         // Create and persist user
         $user = new User();
         $user->setEmail('original@example.original');
-        $user->setPassword(password_hash('original', \PASSWORD_BCRYPT));
+        $oldPassword = $user->setPassword(password_hash('original', \PASSWORD_BCRYPT));
         $user->setRoles(['ROLE_USER']);
         $user->setVerified(false);
 
@@ -58,12 +58,14 @@ class UserTest extends KernelTestCase
 
         // Update user
         $user->setEmail('updated@example.updated');
+        $user->setPassword(password_hash('updated', \PASSWORD_BCRYPT));
         $user->setVerified(true);
 
         $this->entityManager->flush();
 
         $updatedUser = $this->entityManager->getRepository(User::class)->find($user->getUuid());
 
+        $this->assertNotSame($oldPassword, $updatedUser->getPassword());
         $this->assertEquals('updated@example.updated', $updatedUser->getEmail());
         $this->assertEquals('ROLE_USER', $updatedUser->getRoles()[0]);
         $this->assertTrue($updatedUser->isVerified());
